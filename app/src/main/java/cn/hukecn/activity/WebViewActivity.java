@@ -1,7 +1,6 @@
-package cn.hukecn.fund;
+package cn.hukecn.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -10,6 +9,10 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import cn.hukecn.fund.R;
 
 public class WebViewActivity extends AppCompatActivity {
 

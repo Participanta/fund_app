@@ -1,4 +1,4 @@
-package cn.hukecn.fund;
+package cn.hukecn.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,9 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.hukecn.fund.DataBaseHelper;
+import cn.hukecn.fund.FundBean;
+import cn.hukecn.activity.FundDetailActivity;
+import cn.hukecn.fund.MyDataBase;
+import cn.hukecn.fund.R;
+import cn.hukecn.activity.WebViewActivity;
+import cn.hukecn.listener.OnMenuDelListener;
 
 /**
  * Created by Kelson on 2015/11/11.
@@ -18,6 +27,8 @@ public class FundDetailAdapter extends BaseAdapter{
     private final Context context;
     private List<FundBean> list = null;
     View parentView = null;
+    OnMenuDelListener onMenuDelListener;
+
     public FundDetailAdapter(Context context,View parentView){
         this.context = context;
         this.parentView = parentView;
@@ -62,21 +73,23 @@ public class FundDetailAdapter extends BaseAdapter{
         {
             holder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(context);
-            convertView = inflater.inflate(R.layout.fund_detail_item,parent,false);
+            convertView = inflater.inflate(R.layout.fund_list_swipe_item,parent,false);
             holder.tv_fundname = (TextView) convertView.findViewById(R.id.tv_fundname);
             holder.tv_money = (TextView) convertView.findViewById(R.id.tv_money);
             holder.tv_fundpz = (TextView) convertView.findViewById(R.id.tv_fundpz);
             holder.tv_income = (TextView) convertView.findViewById(R.id.tv_income);
+            holder.btn_delete = convertView.findViewById(R.id.btn_delete);
 
             convertView.setTag(holder);
-        }else
+        }else{
             holder = (ViewHolder) convertView.getTag();
+        }
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //popWindow(position);
-                Intent intent = new Intent(context,FundDetailActivity.class);
+                Intent intent = new Intent(context, FundDetailActivity.class);
                 intent.putExtra("fundid",((FundBean)getItem(position)).id);
                 intent.putExtra("fundname",((FundBean)getItem(position)).name);
                 context.startActivity(intent);
@@ -84,12 +97,16 @@ public class FundDetailAdapter extends BaseAdapter{
             }
         });
 
-//        convertView.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//
-//            }
-//        });
+        holder.btn_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(onMenuDelListener != null){
+                    onMenuDelListener.onMenuDel(position);
+                }
+            }
+        });
+
+
 
         bindView(position,holder);
         return convertView;
@@ -117,7 +134,7 @@ public class FundDetailAdapter extends BaseAdapter{
         this_percent = Math.round(this_percent * 10000);
         this_percent = this_percent/10000.0f;
 
-        MyDataBase db = new MyDataBase(context);
+        MyDataBase db = DataBaseHelper.getInstance().getDataBase();
         float money = db.quary(bean.id);
         float this_income = this_percent * money;
         this_income = Math.round(this_income*100);
@@ -145,12 +162,17 @@ public class FundDetailAdapter extends BaseAdapter{
         TextView tv_money;
         TextView tv_income;
         TextView tv_fundpz;
+        Button btn_delete;
     }
 
     public void popWindow(int position) {
-        Intent intent = new Intent(context,WebViewActivity.class);
+        Intent intent = new Intent(context, WebViewActivity.class);
         intent.putExtra("fundid",((FundBean)getItem(position)).id);
         intent.putExtra("fundname",((FundBean)getItem(position)).name);
         context.startActivity(intent);
+    }
+
+    public void setOnMenuDelListener(OnMenuDelListener onMenuDelListener) {
+        this.onMenuDelListener = onMenuDelListener;
     }
 }

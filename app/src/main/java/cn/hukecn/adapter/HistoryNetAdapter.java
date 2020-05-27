@@ -1,4 +1,4 @@
-package cn.hukecn.fund;
+package cn.hukecn.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -10,6 +10,9 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 import java.util.List;
+
+import cn.hukecn.fund.HistoryNetBean;
+import cn.hukecn.fund.R;
 
 /**
  * Created by 22916 on 2016.02.01.
@@ -41,7 +44,7 @@ public class HistoryNetAdapter extends BaseAdapter{
         ViewHolder holder = null;
         if (convertView == null)
         {
-            convertView = View.inflate(context,R.layout.history_net_item,null);
+            convertView = View.inflate(context, R.layout.history_net_item,null);
             holder = new ViewHolder();
             holder.date = (TextView) convertView.findViewById(R.id.date);
             holder.percent = (TextView) convertView.findViewById(R.id.percent);

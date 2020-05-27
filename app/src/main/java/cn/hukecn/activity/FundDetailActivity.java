@@ -1,13 +1,14 @@
-package cn.hukecn.fund;
+package cn.hukecn.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -21,8 +22,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
+
+import cn.hukecn.fund.AsyncHttp;
+import cn.hukecn.fund.HistoryNetBean;
+import cn.hukecn.fund.MyHttp;
+import cn.hukecn.fund.R;
 
 public class FundDetailActivity extends AppCompatActivity {
     LineChart mLineChar;

@@ -1,15 +1,22 @@
-package cn.hukecn.fund;
+package cn.hukecn.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class HistoryNetActivity extends Activity {
+import cn.hukecn.adapter.HistoryNetAdapter;
+import cn.hukecn.fund.AsyncHttp;
+import cn.hukecn.fund.HistoryNetBean;
+import cn.hukecn.fund.MyHttp;
+import cn.hukecn.fund.R;
+
+public class HistoryNetActivity extends AppCompatActivity {
     //TextView info = null;
     ListView listView = null;
     @Override

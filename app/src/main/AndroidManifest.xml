@@ -5,25 +5,34 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name="cn.hukecn.MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name="cn.hukecn.activity.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddActivity" />
-        <activity android:name=".EditActivity" />
-        <activity android:name=".WebViewActivity" />
-        <activity android:name=".FundDetailActivity"/>
+        <activity android:name="cn.hukecn.activity.AddActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="cn.hukecn.activity.EditActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="cn.hukecn.activity.WebViewActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="cn.hukecn.activity.FundDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="cn.hukecn.activity.SearchActivity"
+            android:windowSoftInputMode="stateVisible|adjustPan"
+            android:screenOrientation="portrait"/>
         <activity
-            android:name=".HistoryNetActivity"
-            android:label="@string/title_activity_history_net"
+            android:name="cn.hukecn.activity.HistoryNetActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme"></activity>
     </application>
 

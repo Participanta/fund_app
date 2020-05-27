@@ -13,12 +13,12 @@ import java.io.UnsupportedEncodingException;
  * Created by Kelson on 2016/1/6.
  */
 public class MyHttp {
+    static AsyncHttpClient client = new AsyncHttpClient();
 
     public static void get(Context context, String url, final AsyncHttp.HttpListener listener, final String charset){
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.setTimeout(1000);
+        client.setTimeout(10000);
         client.setThreadPool(AppThreadPool.getInstance().getPool());
-        client.setResponseTimeout(1000);
+        client.setResponseTimeout(10000);
         client.get(context, url, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {

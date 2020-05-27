@@ -1,13 +1,24 @@
-package cn.hukecn.fund;
+package cn.hukecn.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class AddActivity extends AppCompatActivity implements AsyncHttp.HttpListener{
+import androidx.appcompat.app.AppCompatActivity;
+
+import cn.hukecn.fund.AppConfig;
+import cn.hukecn.fund.AsyncHttp;
+import cn.hukecn.fund.BaseTools;
+import cn.hukecn.fund.DataBaseHelper;
+import cn.hukecn.fund.FundBean;
+import cn.hukecn.fund.InsertBDBean;
+import cn.hukecn.fund.MyDataBase;
+import cn.hukecn.fund.MyHttp;
+import cn.hukecn.fund.R;
+
+public class AddActivity extends AppCompatActivity implements AsyncHttp.HttpListener {
 
     EditText et_id = null,et_money = null;
     Button btn_add = null;
@@ -34,8 +45,8 @@ public class AddActivity extends AppCompatActivity implements AsyncHttp.HttpList
                     bean = new InsertBDBean();
                     bean.fundid = id;
                     bean.money = money;
-                    MyDataBase db = new MyDataBase(AddActivity.this);
-                    MyHttp.get(AddActivity.this,AppConfig.BASEURL+bean.fundid+".js?rt="+System.currentTimeMillis(),AddActivity.this,"utf-8");
+                    MyDataBase db = DataBaseHelper.getInstance().getDataBase();
+                    MyHttp.get(AddActivity.this, AppConfig.BASEURL+bean.fundid+".js?rt="+System.currentTimeMillis(),AddActivity.this,"utf-8");
 
                     //baseNetWork.getFundInfo(bean.fundid, AddActivity.this);
                 }
@@ -49,7 +60,7 @@ public class AddActivity extends AppCompatActivity implements AsyncHttp.HttpList
 
 
     public void onDataListener(FundBean bean) {
-        MyDataBase db = new MyDataBase(AddActivity.this);
+        MyDataBase db = DataBaseHelper.getInstance().getDataBase();
         this.bean.fundname = bean.name;
         if(db.insert(this.bean) != -1)
         {

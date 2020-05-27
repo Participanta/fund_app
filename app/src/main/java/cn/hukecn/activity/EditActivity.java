@@ -1,10 +1,7 @@
-package cn.hukecn.fund;
+package cn.hukecn.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.design.widget.TabLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,7 +9,16 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.List;
+
+import cn.hukecn.adapter.EditAdapter;
+import cn.hukecn.fund.DataBaseHelper;
+import cn.hukecn.fund.InsertBDBean;
+import cn.hukecn.fund.MyDataBase;
+import cn.hukecn.fund.R;
 
 public class EditActivity extends AppCompatActivity {
 
@@ -43,7 +49,7 @@ public class EditActivity extends AppCompatActivity {
     protected void onResume() {
         //lv.removeAllViews();
         adapter = null;
-        MyDataBase db = new MyDataBase(EditActivity.this);
+        MyDataBase db = DataBaseHelper.getInstance().getDataBase();
         list = db.query();
         if(list !=null)
         {

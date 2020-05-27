@@ -1,4 +1,4 @@
-package cn.hukecn.fund;
+package cn.hukecn.adapter;
 
 import android.content.Context;
 import android.view.View;
@@ -7,6 +7,11 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import java.util.List;
+
+import cn.hukecn.fund.DataBaseHelper;
+import cn.hukecn.fund.InsertBDBean;
+import cn.hukecn.fund.MyDataBase;
+import cn.hukecn.fund.R;
 
 /**
  * Created by Kelson on 2015/11/10.
@@ -69,7 +74,7 @@ public class EditAdapter extends BaseAdapter {
 
     public void deleteItem(int position){
         InsertBDBean bean = (InsertBDBean) getItem(position);
-        MyDataBase db = new MyDataBase(context);
+        MyDataBase db = DataBaseHelper.getInstance().getDataBase();
         db.delete(bean.fundid);
         list.remove(position);
         notifyDataSetChanged();

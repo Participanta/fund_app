@@ -1,6 +1,6 @@
 package cn.hukecn.bean;
 
-public class FundItem {
+public class OptionalFundItem {
 
     /**
      * fund_code : 000066
@@ -11,10 +11,9 @@ public class FundItem {
      */
 
     private String fund_code;
-    private String fund_en;
     private String fund_name;
-    private String fund_type;
-    private String fund_py;
+    private String open_id;
+    private float money;
 
     public String getFund_code() {
         return fund_code;
@@ -22,14 +21,6 @@ public class FundItem {
 
     public void setFund_code(String fund_code) {
         this.fund_code = fund_code;
-    }
-
-    public String getFund_en() {
-        return fund_en;
-    }
-
-    public void setFund_en(String fund_en) {
-        this.fund_en = fund_en;
     }
 
     public String getFund_name() {
@@ -40,19 +31,19 @@ public class FundItem {
         this.fund_name = fund_name;
     }
 
-    public String getFund_type() {
-        return fund_type;
+    public String getOpen_id() {
+        return open_id;
     }
 
-    public void setFund_type(String fund_type) {
-        this.fund_type = fund_type;
+    public void setOpen_id(String open_id) {
+        this.open_id = open_id;
     }
 
-    public String getFund_py() {
-        return fund_py;
+    public float getMoney() {
+        return money;
     }
 
-    public void setFund_py(String fund_py) {
-        this.fund_py = fund_py;
+    public void setMoney(float money) {
+        this.money = money;
     }
 }
