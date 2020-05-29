@@ -1,12 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/actionbar_bac">
 
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/mLineChar"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        />
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/shape_title_bac"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_20"
+            android:paddingRight="@dimen/dp_10"
+            android:paddingBottom="@dimen/dp_20"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_18" />
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/value_tab_layout"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            app:tabBackground="@color/gainsboro"
+            app:tabIndicatorColor="@color/actionbar_bac">
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="单位净值"/>
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="累计净值"/>
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="累计收益率"/>
+
+        </com.google.android.material.tabs.TabLayout>
+
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/mLineChar"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_height="@dimen/dp_300" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+           >
+            <RadioGroup
+                android:id="@+id/rg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioButton_xiaoxi"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:background="@drawable/selector_radio_btn_bac"
+                    android:paddingTop="@dimen/dp_10"
+                    android:paddingBottom="@dimen/dp_10"
+                    android:text="近一个月"
+                    android:textColor="@color/black" />
+
+                <RadioButton
+                    android:id="@+id/radioButton_lianxiren"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="近三个月"
+                    android:background="@drawable/selector_radio_btn_bac"
+                    android:paddingTop="@dimen/dp_10"
+                    android:paddingBottom="@dimen/dp_10"
+                    android:textColor="@color/black" />
+
+                <RadioButton
+                    android:id="@+id/radioButton_dongtai"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="近六个月"
+                    android:background="@drawable/selector_radio_btn_bac"
+                    android:paddingTop="@dimen/dp_10"
+                    android:paddingBottom="@dimen/dp_10"
+                    android:textColor="@color/black" />
+
+                <RadioButton
+                    android:id="@+id/radioButton_year"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="近一年"
+                    android:background="@drawable/selector_radio_btn_bac"
+                    android:paddingTop="@dimen/dp_10"
+                    android:paddingBottom="@dimen/dp_10"
+                    android:textColor="@color/black" />
+            </RadioGroup>
+        </RadioGroup>
+    </LinearLayout>
+
 
 </LinearLayout>

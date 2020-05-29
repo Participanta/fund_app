@@ -13,19 +13,19 @@ public class BaseTools {
         int start = -1,end = -1;
         start = content.indexOf('{');
         end = content.indexOf('}');
-        String jsonStr = content.substring(start,end+1);
-        try {
-            JSONObject json = new JSONObject(jsonStr);
+//        String jsonStr = content.substring(start,end+1);
+//        try {
+////            JSONObject json = new JSONObject(jsonStr);
             bean = new FundBean();
-            bean.id = json.getString("fundcode");
-            bean.name = json.getString("name");
-            bean.pecent_value = json.getString("gszzl")+"%";
-            bean.fundpz = json.getString("gsz");
-            bean.gztime = json.getString("gztime");
-
-        } catch (JSONException e) {
-            return null;
-        }
+////            bean.id = json.getString("fundcode");
+////            bean.name = json.getString("name");
+////            bean.pecent_value = json.getString("gszzl")+"%";
+////            bean.fundpz = json.getString("gsz");
+////            bean.gztime = json.getString("gztime");
+//
+//        } catch (JSONException e) {
+//            return null;
+//        }
         return bean;
     }
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import cn.hukecn.bean.FundItem;
 import cn.hukecn.bean.OptionalFundItem;
+import cn.hukecn.fund.FundBean;
 import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -20,4 +21,7 @@ public interface FundService {
 
     @GET("query_optional_fund_lists")
     Observable<Template<List<OptionalFundItem>>> getOptionalFundList(@Query("open_id") String open_id);
+
+    @GET("get_fund_valuation")
+    Observable<Template<FundBean>> getFundValuation(@Query("fund_code") String fund_code);
 }

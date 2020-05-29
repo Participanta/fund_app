@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">AndroidScreenAdaptation</string>
+    <string name="app_name">基金助手</string>
+    <string name="remind">提示</string>
+    <string name="ok">确定</string>
 </resources>

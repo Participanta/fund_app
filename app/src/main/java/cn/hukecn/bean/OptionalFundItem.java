@@ -13,7 +13,7 @@ public class OptionalFundItem {
     private String fund_code;
     private String fund_name;
     private String open_id;
-    private float money;
+    private float fund_money;
 
     public String getFund_code() {
         return fund_code;
@@ -39,11 +39,11 @@ public class OptionalFundItem {
         this.open_id = open_id;
     }
 
-    public float getMoney() {
-        return money;
+    public float getFund_money() {
+        return fund_money;
     }
 
-    public void setMoney(float money) {
-        this.money = money;
+    public void setFund_money(float fund_money) {
+        this.fund_money = fund_money;
     }
 }

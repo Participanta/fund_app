@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.jaeger.library.StatusBarUtil;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -13,7 +15,7 @@ import butterknife.Unbinder;
  */
 public abstract class AppBaseActivity extends AppCompatActivity {
 
-    private static final String TAG = "AppBaseActivity";
+    public static final String TAG = AppBaseActivity.class.getSimpleName();
 
     private Unbinder mUnBinder;
 
@@ -24,6 +26,7 @@ public abstract class AppBaseActivity extends AppCompatActivity {
             setContentView(getLayoutId());
         }
         mUnBinder = ButterKnife.bind(this, this);
+        StatusBarUtil.setTransparent(this);
     }
 
 

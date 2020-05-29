@@ -90,7 +90,7 @@ public class FundDetailAdapter extends BaseAdapter{
             public void onClick(View v) {
                 //popWindow(position);
                 Intent intent = new Intent(context, FundDetailActivity.class);
-                intent.putExtra("fundid",((FundBean)getItem(position)).id);
+                intent.putExtra("fundid",((FundBean)getItem(position)).getFundcode());
                 intent.putExtra("fundname",((FundBean)getItem(position)).name);
                 context.startActivity(intent);
                 return;
@@ -117,17 +117,17 @@ public class FundDetailAdapter extends BaseAdapter{
 
         String str_num;
         float this_percent;
-        if(bean.pecent_value.charAt(0) == '-')
+        if(bean.getGszzl().charAt(0) == '-')
         {
             int start = 1;
-            int end = bean.pecent_value.indexOf('%');
-            str_num = bean.pecent_value.substring(start,end);
+            int end = bean.getGszzl().indexOf('%');
+            str_num = bean.getGszzl().substring(start,end);
             this_percent = Float.valueOf(str_num) * -0.01f;
         }else
         {
             int start = 0;
-            int end = bean.pecent_value.indexOf('%');
-            str_num = bean.pecent_value.substring(start,end);
+            int end = bean.getGszzl().indexOf('%');
+            str_num = bean.getGszzl().substring(start,end);
             this_percent = Float.valueOf(str_num) * 0.01f;
         }
 
@@ -135,7 +135,7 @@ public class FundDetailAdapter extends BaseAdapter{
         this_percent = this_percent/10000.0f;
 
         MyDataBase db = DataBaseHelper.getInstance().getDataBase();
-        float money = db.quary(bean.id);
+        float money = db.quary(bean.fundcode);
         float this_income = this_percent * money;
         this_income = Math.round(this_income*100);
         this_income = this_income/100.0f;
@@ -151,7 +151,7 @@ public class FundDetailAdapter extends BaseAdapter{
         }
 
         holder.tv_income.setText(this_income+"");
-        holder.tv_fundpz.setText(bean.pecent_value);
+        holder.tv_fundpz.setText(bean.getGszzl());
         holder.tv_fundname.setText(bean.name);
         holder.tv_money.setText(money+"");
 //        holder.tv_money.setText("预计今日收益：");
@@ -167,7 +167,7 @@ public class FundDetailAdapter extends BaseAdapter{
 
     public void popWindow(int position) {
         Intent intent = new Intent(context, WebViewActivity.class);
-        intent.putExtra("fundid",((FundBean)getItem(position)).id);
+        intent.putExtra("fundid",((FundBean)getItem(position)).fundcode);
         intent.putExtra("fundname",((FundBean)getItem(position)).name);
         context.startActivity(intent);
     }

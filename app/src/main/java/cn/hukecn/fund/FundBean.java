@@ -4,21 +4,32 @@ package cn.hukecn.fund;
  * Created by Kelson on 2015/11/9.
  */
 public class FundBean {
-    public String id;               //代码
+//    {
+//        "fundcode": "320007",
+//            "name": "诺安成长混合",
+//            "gszzl": "-2.58",
+//            "dwjz": "1.5360",
+//            "gsz": "1.4964",
+//            "gztime": "2020-05-28 11:19",
+//            "jzrq": "2020-05-27"
+//    }
+    public String fundcode;               //代码
     public String name;             //基金名
-    public String pecent_value;     //基金涨幅
-    public String fundpz;           //基金净值
+    public String gszzl;     //基金涨幅
+    public String dwjz;           //基金净值
+    public String gsz;           //基金净值
     public String gztime;           //估算时间
-    public float income;
+    public String jzrq;           //净值时间
+
+    public double income;
     public float money;
 
-
-    public String getId() {
-        return id;
+    public String getFundcode() {
+        return fundcode;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setFundcode(String fundcode) {
+        this.fundcode = fundcode;
     }
 
     public String getName() {
@@ -29,20 +40,28 @@ public class FundBean {
         this.name = name;
     }
 
-    public String getPecent_value() {
-        return pecent_value;
+    public String getGszzl() {
+        return gszzl;
     }
 
-    public void setPecent_value(String pecent_value) {
-        this.pecent_value = pecent_value;
+    public void setGszzl(String gszzl) {
+        this.gszzl = gszzl;
     }
 
-    public String getFundpz() {
-        return fundpz;
+    public String getDwjz() {
+        return dwjz;
     }
 
-    public void setFundpz(String fundpz) {
-        this.fundpz = fundpz;
+    public void setDwjz(String dwjz) {
+        this.dwjz = dwjz;
+    }
+
+    public String getGsz() {
+        return gsz;
+    }
+
+    public void setGsz(String gsz) {
+        this.gsz = gsz;
     }
 
     public String getGztime() {
@@ -53,11 +72,19 @@ public class FundBean {
         this.gztime = gztime;
     }
 
-    public float getIncome() {
+    public String getJzrq() {
+        return jzrq;
+    }
+
+    public void setJzrq(String jzrq) {
+        this.jzrq = jzrq;
+    }
+
+    public double getIncome() {
         return income;
     }
 
-    public void setIncome(float income) {
+    public void setIncome(long income) {
         this.income = income;
     }
 

@@ -3,14 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/actionbar_bac">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/colorPrimary"
-        android:padding="@dimen/dp_10">
+        android:background="@drawable/shape_title_bac"
+        android:paddingTop="@dimen/dp_20"
+        android:paddingBottom="@dimen/dp_20"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_10">
         <EditText
             android:id="@+id/edit_search"
             android:layout_width="match_parent"
@@ -35,8 +39,9 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_search"
+        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"/>
 
 
 </LinearLayout>
