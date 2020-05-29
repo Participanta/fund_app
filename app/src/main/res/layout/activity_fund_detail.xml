@@ -63,13 +63,13 @@
             android:orientation="horizontal"
            >
             <RadioGroup
-                android:id="@+id/rg"
+                android:id="@+id/radio_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/radioButton_xiaoxi"
+                    android:id="@+id/radioButton_month"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -82,7 +82,7 @@
                     android:textColor="@color/black" />
 
                 <RadioButton
-                    android:id="@+id/radioButton_lianxiren"
+                    android:id="@+id/radioButton_three_month"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -95,7 +95,7 @@
                     android:textColor="@color/black" />
 
                 <RadioButton
-                    android:id="@+id/radioButton_dongtai"
+                    android:id="@+id/radioButton_six_month"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

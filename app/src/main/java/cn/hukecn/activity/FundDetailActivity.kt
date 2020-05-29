@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import cn.hukecn.base.AppBaseActivity
@@ -60,6 +61,17 @@ class FundDetailActivity : AppBaseActivity() {
                 }
             }
 
+        })
+
+        radio_group.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener{
+            override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
+                when(checkedId){
+                    R.id.radioButton_month-> setLineChartValues(values.subList(values.size - 30,values.size))
+                    R.id.radioButton_three_month->setLineChartValues(acWorthTrendValues)
+                    R.id.radioButton_six_month->setLineChartValues(grandTotalValues)
+                    R.id.radioButton_year->setLineChartValues(grandTotalValues)
+                }
+            }
         })
     }
 
@@ -140,6 +152,7 @@ class FundDetailActivity : AppBaseActivity() {
     }
 
     private fun setLineChartValues(values: ArrayList<Entry>) {
+        this.values = values
         setData(values)
         mLineChar!!.animateX(1500)
         //刷新
