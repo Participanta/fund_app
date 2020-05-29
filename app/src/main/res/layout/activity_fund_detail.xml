@@ -53,7 +53,10 @@
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/dp_10"
             android:layout_height="@dimen/dp_300" />
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:background="@color/black"/>
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -118,6 +121,11 @@
                     android:textColor="@color/black" />
             </RadioGroup>
         </RadioGroup>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:background="@color/black"/>
     </LinearLayout>
 
 
