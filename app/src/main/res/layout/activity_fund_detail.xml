@@ -13,19 +13,33 @@
         android:orientation="vertical">
 
 
-        <TextView
-            android:id="@+id/tv_title"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/shape_title_bac"
             android:paddingLeft="@dimen/dp_10"
             android:paddingTop="@dimen/dp_20"
             android:paddingRight="@dimen/dp_10"
             android:paddingBottom="@dimen/dp_20"
+            android:background="@drawable/shape_title_bac"
+            android:orientation="vertical"
+            >
+            <TextView
+            android:id="@+id/tv_fund_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_18" />
+            <TextView
+                android:id="@+id/tv_fund_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/dp_5"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_14" />
+        </LinearLayout>
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/value_tab_layout"
             android:layout_height="wrap_content"
@@ -47,6 +61,71 @@
 
         </com.google.android.material.tabs.TabLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_10"
+                android:textColor="@color/black"
+                android:layout_marginLeft="@dimen/dp_5"
+                android:text="近一月:"/>
+
+            <TextView
+                android:id="@+id/tv_one_month_earn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_10"
+                android:layout_marginLeft="@dimen/dp_5"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_10"
+                android:textColor="@color/black"
+                android:layout_marginLeft="@dimen/dp_5"
+                android:text="近三个月:"/>
+
+            <TextView
+                android:id="@+id/tv_three_month_earn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_10"
+                android:layout_marginLeft="@dimen/dp_5"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_10"
+                android:textColor="@color/black"
+                android:layout_marginLeft="@dimen/dp_5"
+                android:text="近六个月:"/>
+
+            <TextView
+                android:id="@+id/tv_six_month_earn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_10"
+                android:layout_marginLeft="@dimen/dp_5"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_10"
+                android:textColor="@color/black"
+                android:layout_marginLeft="@dimen/dp_5"
+                android:text="近一年:"/>
+
+            <TextView
+                android:id="@+id/tv_year_earn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_10"
+                android:layout_marginLeft="@dimen/dp_5"/>
+        </LinearLayout>
+
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/mLineChar"
@@ -57,11 +136,6 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_1"
             android:background="@color/black"/>
-        <RadioGroup
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-           >
             <RadioGroup
                 android:id="@+id/radio_group"
                 android:layout_width="match_parent"
@@ -75,6 +149,7 @@
                     android:layout_weight="1"
                     android:button="@null"
                     android:gravity="center"
+                    android:checked="true"
                     android:background="@drawable/selector_radio_btn_bac"
                     android:paddingTop="@dimen/dp_10"
                     android:paddingBottom="@dimen/dp_10"
@@ -120,7 +195,6 @@
                     android:paddingBottom="@dimen/dp_10"
                     android:textColor="@color/black" />
             </RadioGroup>
-        </RadioGroup>
 
         <View
             android:layout_width="match_parent"

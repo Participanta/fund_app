@@ -7,6 +7,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.RadioGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import cn.hukecn.base.AppBaseActivity
@@ -27,6 +28,7 @@ import kotlinx.android.synthetic.main.activity_fund_detail.*
 import org.json.JSONArray
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class FundDetailActivity : AppBaseActivity() {
     var mLineChar: LineChart? = null
@@ -55,10 +57,22 @@ class FundDetailActivity : AppBaseActivity() {
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when(tab!!.position){
-                    0-> setLineChartValues(netWorthTrendValues)
-                    1->setLineChartValues(acWorthTrendValues)
-                    2->setLineChartValues(grandTotalValues)
+                    0-> {
+                        setLineChartValues(netWorthTrendValues)
+                        values = netWorthTrendValues
+                    }
+                    1->{
+                        setLineChartValues(acWorthTrendValues)
+                        values = acWorthTrendValues
+
+                    }
+                    2->{
+                        setLineChartValues(grandTotalValues)
+                        values = grandTotalValues
+                    }
                 }
+
+                radioButton_year.isChecked = true
             }
 
         })
@@ -66,13 +80,31 @@ class FundDetailActivity : AppBaseActivity() {
         radio_group.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener{
             override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
                 when(checkedId){
-                    R.id.radioButton_month-> setLineChartValues(values.subList(values.size - 30,values.size))
-                    R.id.radioButton_three_month->setLineChartValues(acWorthTrendValues)
-                    R.id.radioButton_six_month->setLineChartValues(grandTotalValues)
-                    R.id.radioButton_year->setLineChartValues(grandTotalValues)
+                    R.id.radioButton_month-> setLineChartValues(sublist(values.size-30,values.size))
+                    R.id.radioButton_three_month->setLineChartValues(sublist(values.size-90,values.size))
+                    R.id.radioButton_six_month->setLineChartValues(sublist(values.size-180,values.size))
+                    R.id.radioButton_year->setLineChartValues(sublist(values.size-365,values.size))
                 }
             }
         })
+    }
+
+    private fun sublist(from : Int,end :Int) : ArrayList<Entry>{
+        var splitList = ArrayList<Entry>()
+        var endIndex  = end
+        var fromIndex  = from
+        if(from < 0){
+            fromIndex = 0
+        }
+
+        if(end > values.size) {
+            endIndex = values.size
+        }
+        for (index in fromIndex until endIndex){
+            splitList.add(values[index])
+        }
+
+        return splitList
     }
 
     override fun getLayoutId(): Int {
@@ -89,8 +121,9 @@ class FundDetailActivity : AppBaseActivity() {
                 Toast.makeText(applicationContext, "System Error...", Toast.LENGTH_LONG).show()
                 return
             }
-            tv_title.text = fundname
-            getFundDetail(fundid);
+            tv_fund_name.text = fundname
+            tv_fund_code.text = fundid.toString()
+            getFundDetail(fundid)
         }
     }
 
@@ -98,6 +131,7 @@ class FundDetailActivity : AppBaseActivity() {
         var url = "http://fund.eastmoney.com/pingzhongdata/$fundid.js"
         MyHttp.get(this, url, { statusCode, content ->
             if (statusCode == 200) {
+                Log.i(TAG,content.toString())
                 parseData(content)
 
             }
@@ -109,19 +143,20 @@ class FundDetailActivity : AppBaseActivity() {
         for (item in datas!!){
             if (item.contains("Data_netWorthTrend")){   //解析获取单位净值数据
                 val  dataNewWorthTrend = item.substring(item.indexOf("=")+1)
-                val dataNewWorthTrendJsonArray = JSONArray(dataNewWorthTrend);
+                val dataNewWorthTrendJsonArray = JSONArray(dataNewWorthTrend)
                 for (index in 0 until dataNewWorthTrendJsonArray.length()){
                     val jsonObject = dataNewWorthTrendJsonArray.getJSONObject(index)
                     val x = jsonObject.getLong("x")
                     val y = jsonObject.getDouble("y")
                     netWorthTrendValues.add(Entry(x.toFloat(), y.toFloat()))
                 }
-                setLineChartValues(netWorthTrendValues)
+                values = netWorthTrendValues
+                setLineChartValues(sublist(values.size-30,values.size))
             }
 
-            if (item.contains("Data_ACWorthTrend")){   //解析获取单位净值数据
+            if (item.contains("Data_ACWorthTrend")){   //解析获取累计单位净值数据
                 val  dataNewWorthTrend = item.substring(item.indexOf("=")+1)
-                val dataNewWorthTrendJsonArray = JSONArray(dataNewWorthTrend);
+                val dataNewWorthTrendJsonArray = JSONArray(dataNewWorthTrend)
                 for (index in 0 until dataNewWorthTrendJsonArray.length()){
                     val jsonObject = dataNewWorthTrendJsonArray.getJSONArray(index)
                     val x = jsonObject.get(0)
@@ -130,9 +165,9 @@ class FundDetailActivity : AppBaseActivity() {
                 }
             }
 
-            if (item.contains("Data_grandTotal")){   //解析获取单位净值数据
+            if (item.contains("Data_grandTotal")){   //解析获取累计收益率数据
                 val  dataNewWorthTrend = item.substring(item.indexOf("=")+1)
-                val dataNewWorthTrendJsonArray = JSONArray(dataNewWorthTrend);
+                val dataNewWorthTrendJsonArray = JSONArray(dataNewWorthTrend)
                 for (index in 0 until dataNewWorthTrendJsonArray.length()){
                     val jsonObject = dataNewWorthTrendJsonArray.getJSONObject(index)
                     if(jsonObject.getJSONArray("data")!=null){
@@ -148,11 +183,49 @@ class FundDetailActivity : AppBaseActivity() {
 
                 }
             }
+
+            if (item.contains("syl_1y")){   //近一个月收益率
+                val  syl_1y = item.substring(item.indexOf("=")+2,item.length-1).trim()
+                setEarnPercent(syl_1y,tv_one_month_earn)
+            }
+
+            if (item.contains("syl_3y")){    //近三个月收益率
+                val  syl_3y = item.substring(item.indexOf("=")+2,item.length-1).trim()
+                setEarnPercent(syl_3y,tv_three_month_earn)
+
+            }
+
+            if (item.contains("syl_6y")){   //近六个月收益率
+                val  syl_6y = item.substring(item.indexOf("=")+2,item.length-1).trim()
+                setEarnPercent(syl_6y,tv_six_month_earn)
+
+            }
+
+            if (item.contains("syl_1n")){    //近一年收益率
+                val  syl_1n = item.substring(item.indexOf("=")+2,item.length-1).trim()
+                setEarnPercent(syl_1n,tv_year_earn)
+
+            }
         }
     }
 
+    private fun setEarnPercent(percent: String,textView:TextView) {
+        if(TextUtils.isEmpty(percent)){
+            textView.text = ""
+            return
+        }
+
+        var earnPercent =Math.round(percent.toDouble()*100)/100.00
+
+        if(earnPercent > 0){
+            textView.setTextColor(Color.RED)
+        }else{
+            textView.setTextColor(Color.GREEN)
+        }
+        textView.text = "$earnPercent%"
+    }
+
     private fun setLineChartValues(values: ArrayList<Entry>) {
-        this.values = values
         setData(values)
         mLineChar!!.animateX(1500)
         //刷新
