@@ -8,6 +8,6 @@ object FundRetrofitHolder {
     init {
         val interceptorBuilder = HttpCommonInterceptor.Builder()
                 .addHeaderParams("Content-Type", "application/json;charset=UTF-8")
-        retrofit = RetrofitServiceManager.newInstance(ApiConfig.TEST_URL, interceptorBuilder.build())
+        retrofit = RetrofitServiceManager.newInstance(ApiConfig.BASE_URL, interceptorBuilder.build())
     }
 }
