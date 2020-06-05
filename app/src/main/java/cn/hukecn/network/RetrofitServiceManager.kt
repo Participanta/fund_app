@@ -60,7 +60,11 @@ class RetrofitServiceManager private constructor(baseUrl: String, commonIntercep
         if (loggingInterceptor == null) {
             loggingInterceptor = LoggingInterceptor()
         }
+        val sslParams1 = HttpsUtils.getSslSocketFactory()
+
         builder.addInterceptor(loggingInterceptor)
+        builder.sslSocketFactory(SSLUtil.sSLSocketFactory)
+        builder.hostnameVerifier(SSLUtil.hostnameVerifier)
         // 创建Retrofit
         mRetrofit = Retrofit.Builder()
                 .client(builder.build())
@@ -70,4 +74,5 @@ class RetrofitServiceManager private constructor(baseUrl: String, commonIntercep
                 .baseUrl(baseUrl)
                 .build()
     }
+
 }
