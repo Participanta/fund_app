@@ -81,12 +81,12 @@ class SearchActivity : AppBaseActivity() {
     }
 
     private fun searchFund(name: String) {
-        FundRetrofitHolder.getRetrofit()
-                .create(FundService::class.java)
-                .searchFund(name)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ listTemplate ->
+        FundRetrofitHolder.retrofit
+                ?.create(FundService::class.java)
+                ?.searchFund(name)
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe({ listTemplate ->
                     fundItemList.clear()
                     fundItemList.addAll(listTemplate.data!!)
                     searchListRecyclerViewAdapter!!.notifyDataSetChanged()
@@ -94,17 +94,17 @@ class SearchActivity : AppBaseActivity() {
     }
 
     private fun addOptionalFund(fundItem: FundItem,money : Float) {
-        val params: MutableMap<String, Any> = HashMap()
+        val params: MutableMap<String, Any?> = HashMap()
         params["open_id"] = "2013551128"
         params["fund_code"] = fundItem.fund_code
         params["fund_name"] = fundItem.fund_name
         params["fund_money"] = money
-        FundRetrofitHolder.getRetrofit()
-                .create(FundService::class.java)
-                .addOptionalFund(params)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ Toast.makeText(this@SearchActivity, "添加成功", Toast.LENGTH_SHORT).show() }) { }
+        FundRetrofitHolder.retrofit
+                ?.create(FundService::class.java)
+                ?.addOptionalFund(params)
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe({ Toast.makeText(this@SearchActivity, "添加成功", Toast.LENGTH_SHORT).show() }) { }
     }
 
     companion object {

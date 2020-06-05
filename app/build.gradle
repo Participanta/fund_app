@@ -3,6 +3,7 @@ apply plugin: 'com.jakewharton.butterknife'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions' //扩展插件
 apply plugin: 'kotlin-kapt'  //kapt3插件
+
 android {
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
@@ -78,4 +79,9 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'pub.devrel:easypermissions:3.0.0'
     implementation 'com.jaeger.statusbarutil:library:1.5.1'
+
+    implementation 'com.beloo.widget:ChipsLayoutManager:0.3.7@aar'
+
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 }

@@ -5,40 +5,92 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/actionbar_bac">
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:orientation="vertical">
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/dp_10"
-            android:paddingTop="@dimen/dp_20"
-            android:paddingRight="@dimen/dp_10"
-            android:paddingBottom="@dimen/dp_20"
-            android:background="@drawable/shape_title_bac"
-            android:orientation="vertical"
-            >
-            <TextView
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_10"
+        android:background="@drawable/shape_title_bac"
+        android:orientation="vertical"
+        >
+        <TextView
             android:id="@+id/tv_fund_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_18" />
+        <TextView
+            android:id="@+id/tv_fund_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/dp_5"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_14" />
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/whitesmoke"
+        >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rlyt_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_10"
+            android:paddingBottom="@dimen/dp_10">
             <TextView
-                android:id="@+id/tv_fund_code"
+                android:id="@+id/tv_latest_value_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
+                android:textSize="@dimen/sp_12"
+                android:textColor="@color/white"
+                android:text="@string/latest_value"
+                android:layout_alignParentLeft="true"/>
+
+            <TextView
+                android:id="@+id/tv_latest_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_latest_value_title"
                 android:layout_marginTop="@dimen/dp_5"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_14" />
-        </LinearLayout>
+                android:textSize="@dimen/sp_28"
+                android:text="88888"
+                android:layout_alignParentLeft="true"/>
+
+            <TextView
+                android:id="@+id/tv_increase_value_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_12"
+                android:text="@string/increase_value"
+                android:textColor="@color/white"
+                android:layout_alignParentRight="true"/>
+
+            <TextView
+                android:id="@+id/tv_increase_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_latest_value_title"
+                android:layout_marginTop="@dimen/dp_5"
+                android:textSize="@dimen/sp_28"
+                android:textColor="@color/white"
+                android:text="88888"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/value_tab_layout"
@@ -134,7 +186,7 @@
             android:layout_height="@dimen/dp_300" />
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_1"
+            android:layout_height="@dimen/dp_0_5"
             android:background="@color/black"/>
             <RadioGroup
                 android:id="@+id/radio_group"
@@ -198,9 +250,117 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_1"
+            android:layout_height="@dimen/dp_0_5"
             android:background="@color/black"/>
-    </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_marginTop="@dimen/dp_20"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_16"
+                android:padding="@dimen/dp_10"
+                android:text="@string/fund_scale"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="@color/black"/>
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/bar_chart"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_200"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_marginTop="@dimen/dp_20"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_16"
+                android:padding="@dimen/dp_10"
+                android:text="@string/fund_manager"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_1"
+                android:background="@color/black"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
+                android:paddingBottom="@dimen/dp_10">
+                <ImageView
+                    android:id="@+id/iv_manager_header"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_width="@dimen/dp_50"
+                    android:layout_height="@dimen/dp_50"
+                    android:layout_alignParentLeft="true"/>
+
+                <TextView
+                    android:id="@+id/tv_manager_name"
+                    android:layout_below="@+id/iv_manager_header"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:textSize="@dimen/sp_16"
+                    android:textColor="@color/black"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatRatingBar
+                    android:id="@+id/tv_manager_star"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:layout_alignParentRight="true"
+                    android:progressTint="@color/actionbar_bac"/>
+
+                <TextView
+                    android:id="@+id/tv_manage_time"
+                    android:layout_below="@+id/tv_manager_star"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_16"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_marginTop="@dimen/dp_20"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_16"
+                android:padding="@dimen/dp_10"
+                android:text="@string/asset_manager"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_1"
+                android:background="@color/black"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

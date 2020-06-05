@@ -1,53 +1,40 @@
 package cn.hukecn.activity
 
 import android.graphics.Color
-import android.graphics.DashPathEffect
-import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
-import android.view.View
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import cn.hukecn.base.AppBaseActivity
-import cn.hukecn.fund.HistoryNetBean
+import cn.hukecn.fund.AsyncHttp
 import cn.hukecn.fund.MyHttp
 import cn.hukecn.fund.R
-import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
+import com.bumptech.glide.Glide
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.github.mikephil.charting.utils.ViewPortHandler
 import com.google.android.material.tabs.TabLayout
-import com.google.gson.JsonArray
-import com.jaeger.library.StatusBarUtil
 import kotlinx.android.synthetic.main.activity_fund_detail.*
 import org.json.JSONArray
+import org.json.JSONObject
 import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
 class FundDetailActivity : AppBaseActivity() {
-    var mLineChar: LineChart? = null
     var set1: LineDataSet? = null
     var values = ArrayList<Entry>()
     var netWorthTrendValues = ArrayList<Entry>()
     var acWorthTrendValues = ArrayList<Entry>()
     var grandTotalValues = ArrayList<Entry>()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_fund_detail)
-        StatusBarUtil.setTransparent(this)
-        mLineChar = findViewById<View>(R.id.mLineChar) as LineChart
-        initCharts()
-        initChartDatas()
-        initView()
-    }
+    var fundScaleValues = ArrayList<BarEntry>()
 
-    private fun initView() {
+    override fun initView() {
+        initLineCharts()
+        initData()
+        initBarCharts()
         value_tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
@@ -111,8 +98,7 @@ class FundDetailActivity : AppBaseActivity() {
         return R.layout.activity_fund_detail
     }
 
-    private fun initChartDatas() {
-        var url: String? = null
+    private fun initData() {
         val intent = intent
         if (intent != null) {
             val fundid = intent.getStringExtra("fundid")
@@ -127,15 +113,20 @@ class FundDetailActivity : AppBaseActivity() {
         }
     }
 
-    private fun getFundDetail(fundid: String) {
-        var url = "http://fund.eastmoney.com/pingzhongdata/$fundid.js"
-        MyHttp.get(this, url, { statusCode, content ->
+    val listener = object : AsyncHttp.HttpListener{
+        override fun onHttpCallBack(statusCode: Int, content: String?) {
             if (statusCode == 200) {
                 Log.i(TAG,content.toString())
                 parseData(content)
 
             }
-        }, "utf-8")
+        }
+
+    }
+
+    private fun getFundDetail(fundid: String) {
+        var url = "http://fund.eastmoney.com/pingzhongdata/$fundid.js"
+        MyHttp.get(this, url, listener, "utf-8")
     }
 
     private fun parseData(content: String?) {
@@ -149,9 +140,19 @@ class FundDetailActivity : AppBaseActivity() {
                     val x = jsonObject.getLong("x")
                     val y = jsonObject.getDouble("y")
                     netWorthTrendValues.add(Entry(x.toFloat(), y.toFloat()))
+                    if(index == dataNewWorthTrendJsonArray.length()-1){
+                        tv_latest_value_title.text = resources.getString(R.string.latest_value,mFormat.format(x))
+                        tv_latest_value.text = y.toString()
+                        val pre = dataNewWorthTrendJsonArray.getJSONObject(index-1).getDouble("y")
+                        val percent = (Math.round(((y/pre)-1)*10000)/100.00)
+                        val bac = if(percent < 0) resources.getColor(R.color.limegreen) else resources.getColor(R.color.firebrick)
+                        rlyt_value.setBackgroundColor(bac)
+                        tv_increase_value.text = "$percent%"
+                    }
                 }
                 values = netWorthTrendValues
                 setLineChartValues(sublist(values.size-30,values.size))
+
             }
 
             if (item.contains("Data_ACWorthTrend")){   //解析获取累计单位净值数据
@@ -206,6 +207,38 @@ class FundDetailActivity : AppBaseActivity() {
                 setEarnPercent(syl_1n,tv_year_earn)
 
             }
+
+            if(item.contains("Data_fluctuationScale")){  //获取规模变动
+                val  data_fluctuationScale = item.substring(item.indexOf("=")+1)
+                val data_fluctuationScaleJsonObject = JSONObject(data_fluctuationScale)
+                val categories = data_fluctuationScaleJsonObject.getJSONArray("categories")
+                val series = data_fluctuationScaleJsonObject.getJSONArray("series")
+
+                for (index in 1 until series.length()){
+                    val y = series.getJSONObject(index).getDouble("y").toFloat()
+                    val x = convert2long(categories.getString(index)).toFloat()
+                    fundScaleValues.add(BarEntry(x,y))
+                }
+
+                setBarChartDatas(fundScaleValues)
+            }
+
+            if(item.contains("Data_currentFundManager")){  //获取经理信息
+                val  data_current_manager = item.substring(item.indexOf("=")+1)
+                val currentFundManagerJsonObject = JSONArray(data_current_manager)
+                val mangerInfo = currentFundManagerJsonObject.getJSONObject(0)
+                val managerName = mangerInfo.getString("name")
+                val star = mangerInfo.getInt("star")
+                val workTime = mangerInfo.getString("workTime")
+                val headUrl = mangerInfo.getString("pic")
+
+                tv_manager_name.text = managerName
+                tv_manager_star.rating = star.toFloat()
+                tv_manage_time.text = workTime
+                Glide.with(this).load(headUrl).into(iv_manager_header)
+
+                setBarChartDatas(fundScaleValues)
+            }
         }
     }
 
@@ -233,11 +266,11 @@ class FundDetailActivity : AppBaseActivity() {
     }
 
     private fun setData(values: ArrayList<Entry>) {
-        if (mLineChar!!.data != null && mLineChar!!.data.dataSetCount > 0) {
-            set1 = mLineChar!!.data.getDataSetByIndex(0) as LineDataSet
+        if (mLineChar.data != null && mLineChar.data.dataSetCount > 0) {
+            set1 = mLineChar.data.getDataSetByIndex(0) as LineDataSet
             set1!!.values = values
-            mLineChar!!.data.notifyDataChanged()
-            mLineChar!!.notifyDataSetChanged()
+            mLineChar.data.notifyDataChanged()
+            mLineChar.notifyDataSetChanged()
         } else {
             // 创建一个数据集,并给它一个类型
             set1 = LineDataSet(values, "近一个月走势")
@@ -261,8 +294,8 @@ class FundDetailActivity : AppBaseActivity() {
             val data = LineData(dataSets)
 
             //谁知数据
-            mLineChar!!.data = data
-            mLineChar!!.xAxis.valueFormatter = object : ValueFormatter() {
+            mLineChar.data = data
+            mLineChar.xAxis.valueFormatter = object : ValueFormatter() {
                 var mFormat = SimpleDateFormat("M月d")
                 override fun getFormattedValue(value: Float): String {
                     return mFormat.format(value)
@@ -271,64 +304,86 @@ class FundDetailActivity : AppBaseActivity() {
         }
     }
 
-    private fun initCharts() {
+    private fun initLineCharts() {
 //        //设置手势滑动事件
 //        mLineChar.setOnChartGestureListener(this);
 //        //设置数值选择监听
 //        mLineChar.setOnChartValueSelectedListener(this);
         //后台绘制
-        mLineChar!!.setDrawGridBackground(false)
+        mLineChar.setDrawGridBackground(false)
         //设置描述文本
-        mLineChar!!.description.isEnabled = false
+        mLineChar.description.isEnabled = false
         //设置支持触控手势
-        mLineChar!!.setTouchEnabled(true)
+        mLineChar.setTouchEnabled(true)
         //设置缩放
-        mLineChar!!.isDragEnabled = true
+        mLineChar.isDragEnabled = true
         //设置推动
-        mLineChar!!.setScaleEnabled(true)
+        mLineChar.setScaleEnabled(true)
         //如果禁用,扩展可以在x轴和y轴分别完成
-        mLineChar!!.setPinchZoom(true)
+        mLineChar.setPinchZoom(true)
     }
 
-    private fun praseHtml(content: String): List<HistoryNetBean> {
-        val list: MutableList<HistoryNetBean> = ArrayList()
-        var tbody: String? = null
-        var start = -1
-        var end = -1
-        start = content.indexOf("<tbody>")
-        end = content.indexOf("</tbody>")
-        if (start == -1 || end == -1) return list
-        tbody = content.substring(start, end)
-        var tr: String? = null
-        var tr_start = 0
-        var tr_end = 0
-        while (true) {
-            val bean = HistoryNetBean()
-            tr_start = tbody.indexOf("<tr>", tr_end)
-            tr_end = tbody.indexOf("</tr>", tr_start)
-            if (tr_start <= 0 || tr_end <= 0) break
-            tr = tbody.substring(tr_start, tr_end)
-            start = tr.indexOf("<td>") + 4
-            end = tr.indexOf("</td>")
-            if (start == -1 || end == -1) break
-            bean.date = tr.substring(start, end)
-            start = tr.indexOf("bold") + 6
-            end = tr.indexOf("</td>", start)
-            if (start == -1 || end == -1) break
-            bean.value = tr.substring(start, end)
-            start = tr.indexOf("bold", end) + 6
-            end = tr.indexOf("</td>", start)
-            start = tr.indexOf("bold", end)
-            start = tr.indexOf(">", start) + 1
-            end = tr.indexOf("</td>", start) - 1
-            val strFloat = tr.substring(start, end)
-            bean.percent = strFloat.toFloat()
-            list.add(bean)
+
+    private fun initBarCharts() {
+        //后台绘制
+        bar_chart.setDrawGridBackground(false)
+        //设置描述文本
+        bar_chart.description.isEnabled = false
+        //设置支持触控手势
+        bar_chart.setTouchEnabled(true)
+        //设置缩放
+        bar_chart.isDragEnabled = true
+        //设置推动
+        bar_chart.setScaleEnabled(true)
+        //如果禁用,扩展可以在x轴和y轴分别完成
+        bar_chart.setPinchZoom(true)
+    }
+
+    private fun setBarChartDatas(datas: ArrayList<BarEntry>){
+        val set1 = BarDataSet(datas, "")
+
+        set1.color = Color.RED
+        set1.valueTextSize = 10f
+//        set1.formLineWidth = 0.5f
+//        set1.formSize = 15f
+//        set1.setDrawValues(false)
+        val dataSets = ArrayList<IBarDataSet>()
+        //添加数据集
+        dataSets.add(set1)
+
+        //创建一个数据集的数据对象
+        val data = BarData(dataSets)
+        data.barWidth = 3500000000f
+
+        data.setValueFormatter(object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                return value.toString()+"亿"
+            }
+        })
+
+        //谁知数据
+        bar_chart.data = data
+
+        bar_chart.xAxis.setDrawGridLines(false)//不绘制格网线
+        bar_chart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+        bar_chart.xAxis.valueFormatter = object : ValueFormatter() {
+            var mFormat = SimpleDateFormat("yy-MM-dd")
+            override fun getFormattedValue(value: Float): String {
+                return mFormat.format(value)
+            }
         }
-        return list
+        bar_chart.xAxis.axisMinimum = datas[0].x-7000000000
+        bar_chart.xAxis.axisMaximum = datas[datas.size-1].x+7000000000
 
+        bar_chart.axisRight.isEnabled = false
+        bar_chart.axisLeft.isEnabled = false
+
+        bar_chart.animateX(1500)
+        //刷新
+        bar_chart.invalidate()
 
     }
+
 
     fun convert2long(date: String?): Long {
         try {
@@ -344,5 +399,7 @@ class FundDetailActivity : AppBaseActivity() {
 
     companion object {
         var DATE_YYYY_MM_DD = "yyyy-MM-dd"
+        var DATE_MM_DD = "MM-dd"
+        var mFormat = SimpleDateFormat(DATE_MM_DD)
     }
 }

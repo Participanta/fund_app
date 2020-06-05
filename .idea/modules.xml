@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Fund.iml" filepath="$PROJECT_DIR$/Fund.iml" />
       <module fileurl="file://$PROJECT_DIR$/Fund-master.iml" filepath="$PROJECT_DIR$/Fund-master.iml" group="Fund-master" />
-      <module fileurl="file://$PROJECT_DIR$/app/Fund-master.app.iml" filepath="$PROJECT_DIR$/app/Fund-master.app.iml" group="Fund-master/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Fund-master-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Fund-master-app.iml" group="Fund-master/app" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

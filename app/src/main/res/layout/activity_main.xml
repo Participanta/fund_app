@@ -9,15 +9,12 @@
     android:orientation="vertical"
     tools:context="cn.hukecn.activity.MainActivity"
     android:background="@color/actionbar_bac">
-    <include layout="@layout/layout_title_main"/>
+    <include layout="@layout/layout_title_main" />
 
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#999"/>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#999" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +22,7 @@
         android:paddingRight="@dimen/dp_15"
         android:paddingTop="@dimen/dp_5"
         android:paddingBottom="@dimen/dp_5"
-        android:background="@color/gainsboro"
+        android:background="@color/whitesmoke"
         >
 
         <LinearLayout

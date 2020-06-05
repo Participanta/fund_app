@@ -9,9 +9,10 @@
 
     <Button
         android:id="@+id/btn_delete"
-        android:layout_width="60dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@color/firebrick"
+        android:background="@color/red"
         android:text="删除"
+        android:padding="@dimen/dp_10"
         android:textColor="@android:color/white"/>
 </com.mcxtzhang.swipemenulib.SwipeMenuLayout>

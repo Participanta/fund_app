@@ -2,4 +2,11 @@
     <string name="app_name">基金助手</string>
     <string name="remind">提示</string>
     <string name="ok">确定</string>
+    <string name="splash_text">永远相信美好的事情即将发生</string>
+    <string name="fund_scale">基金规模</string>
+    <string name="fund_manager">基金经理</string>
+    <string name="asset_manager">资产配置</string>
+    <string name="latest_value">最新净值(%s)</string>
+    <string name="increase_value">日涨幅</string>
+
 </resources>
