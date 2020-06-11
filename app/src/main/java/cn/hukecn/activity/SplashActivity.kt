@@ -10,6 +10,7 @@ import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import cn.hukecn.base.AppBaseActivity
 import cn.hukecn.fund.R
+import cn.hukecn.utils.Preference
 import kotlinx.android.synthetic.main.activity_splash.*
 import pub.devrel.easypermissions.EasyPermissions
 
@@ -18,6 +19,7 @@ class SplashActivity : AppBaseActivity(),EasyPermissions.PermissionCallbacks {
     override fun getLayoutId(): Int {
         return R.layout.activity_splash
     }
+    var isLogin by Preference("login",false)
 
     private var alphaAnimation: AlphaAnimation?=null
 
@@ -43,9 +45,15 @@ class SplashActivity : AppBaseActivity(),EasyPermissions.PermissionCallbacks {
 
 
     fun redirectTo() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
+        if (!isLogin){
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }else{
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     /**
@@ -62,28 +70,12 @@ class SplashActivity : AppBaseActivity(),EasyPermissions.PermissionCallbacks {
 
     }
 
-    fun getPhoneNumber(){
-        val tm = this.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        val deviceid = tm.deviceId //获取智能设备唯一编号
-
-        val te1 = tm.line1Number //获取本机号码
-
-        val imei = tm.simSerialNumber //获得SIM卡的序号
-
-        val imsi = tm.subscriberId //得到用户Id
-
-        Log.i("phoneNum",te1+"")
-
-    }
-
-
     override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
         if (requestCode == 0) {
             if (perms.isNotEmpty()) {
                 if (perms.contains(Manifest.permission.READ_PHONE_STATE)
                         && perms.contains(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     if (alphaAnimation != null) {
-                        getPhoneNumber()
                         iv_web_icon.startAnimation(alphaAnimation)
                     }
                 }

@@ -1,8 +1,10 @@
 package cn.hukecn.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.InputType
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.TextView
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
+import cn.hukecn.MyApplication
 import cn.hukecn.adapter.SearchListRecyclerViewAdapter
 import cn.hukecn.base.AppBaseActivity
 import cn.hukecn.bean.FundItem
@@ -94,8 +97,13 @@ class SearchActivity : AppBaseActivity() {
     }
 
     private fun addOptionalFund(fundItem: FundItem,money : Float) {
+        var phoneNum = MyApplication.instance.getPhoneNumber()
+        if(TextUtils.isEmpty(phoneNum)){
+            toLoginActivity()
+            return
+        }
         val params: MutableMap<String, Any?> = HashMap()
-        params["open_id"] = "2013551128"
+        params["open_id"] = phoneNum
         params["fund_code"] = fundItem.fund_code
         params["fund_name"] = fundItem.fund_name
         params["fund_money"] = money
@@ -105,6 +113,11 @@ class SearchActivity : AppBaseActivity() {
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe({ Toast.makeText(this@SearchActivity, "添加成功", Toast.LENGTH_SHORT).show() }) { }
+    }
+
+    private fun toLoginActivity() {
+       var intent = Intent(this@SearchActivity,LoginActivity::class.java)
+        startActivity(intent)
     }
 
     companion object {

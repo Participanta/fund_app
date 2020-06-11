@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/actionbar_bac">
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/dp_10"
-        android:paddingTop="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_8"
         android:paddingRight="@dimen/dp_10"
-        android:paddingBottom="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_8"
         android:background="@drawable/shape_title_bac"
         android:orientation="vertical"
         >
@@ -19,18 +19,26 @@
             android:id="@+id/tv_fund_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:textColor="@color/white"
+            android:layout_centerHorizontal="true"
             android:textSize="@dimen/sp_18" />
         <TextView
             android:id="@+id/tv_fund_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginTop="@dimen/dp_3"
+            android:layout_below="@+id/tv_fund_name"
+            android:layout_centerHorizontal="true"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp_14" />
-    </LinearLayout>
+            android:textSize="@dimen/sp_12" />
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_back"/>
+    </RelativeLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

@@ -2,7 +2,7 @@ package cn.hukecn.adapter
 
 import android.graphics.Color
 import android.text.TextUtils
-import cn.hukecn.fund.FundBean
+import cn.hukecn.bean.FundBean
 import cn.hukecn.fund.R
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder

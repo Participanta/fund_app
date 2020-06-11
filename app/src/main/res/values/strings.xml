@@ -8,5 +8,11 @@
     <string name="asset_manager">资产配置</string>
     <string name="latest_value">最新净值(%s)</string>
     <string name="increase_value">日涨幅</string>
-
+    <string name="login">一键登录</string>
+    <string name="click_to_add_data">点击添加数据</string>
+    <string name="title_activity_home">MainActivity</string>
+    <string name="title_home">自选</string>
+    <string name="title_news">资讯</string>
+    <string name="title_user">个人</string>
+    <string name="news_commentsize">%1$s评论</string>
 </resources>

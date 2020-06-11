@@ -19,7 +19,7 @@
             android:layout_marginRight="@dimen/dp_40"
             android:layout_height="@dimen/dp_30"
             android:background="@drawable/shape_search_bac"
-            android:text="搜索"
+            android:text="🔍 搜索"
             android:gravity="center"
             android:layout_centerInParent="true"/>
 
@@ -55,9 +55,9 @@
                 android:layout_height="wrap_content"/>
         </LinearLayout>
         <View
-            android:layout_width="1dp"
+            android:layout_width="@dimen/dp_0_1"
             android:layout_height="match_parent"
-            android:background="#999"/>
+            android:background="@color/darkgray"/>
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="2"
@@ -73,6 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/sp_16"
+                    android:textColor="@color/white"
                     android:text="预计今日收益："/>
 
                 <TextView

@@ -19,8 +19,8 @@
                 android:id="@+id/tv_index_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#000"
-                android:textSize="@dimen/sp_16"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_14"
                 android:gravity="center_horizontal"
                 android:text="上证指数"/>
             <TextView
@@ -54,8 +54,8 @@
                 android:layout_width="wrap_content"
                 android:gravity="center_horizontal"
                 android:layout_height="wrap_content"
-                android:textColor="#000"
-                android:textSize="@dimen/sp_16"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_14"
                 android:text="创业板指"/>
             <TextView
                 android:id="@+id/tv_index1"

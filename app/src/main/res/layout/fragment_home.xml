@@ -74,16 +74,16 @@
                     android:text="净值估算"/>
 
             </RelativeLayout>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerview"
-                    android:background="@null"
-                    android:layout_marginTop="@dimen/dp_4"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    >
-                </androidx.recyclerview.widget.RecyclerView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:background="@null"
+                android:layout_marginTop="@dimen/dp_4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+            </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-  </LinearLayout>
+</LinearLayout>

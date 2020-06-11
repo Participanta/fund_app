@@ -25,8 +25,8 @@ object MyHttp {
                 }
             }
 
-            override fun onFailure(i: Int, headers: Array<Header>, bytes: ByteArray, throwable: Throwable) {
-                //
+            override fun onFailure(i: Int, headers: Array<Header?>?, bytes: ByteArray?, throwable: Throwable?) {
+
             }
         }]
     }

@@ -1,31 +1,33 @@
-package cn.hukecn.activity
+package cn.hukecn.activity.ui.home
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.os.Process
 import android.text.InputType
 import android.util.Log
-import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import butterknife.ButterKnife
 import cn.hukecn.MyApplication
+import cn.hukecn.activity.FundDetailActivity
+import cn.hukecn.activity.SearchActivity
 import cn.hukecn.adapter.FundListRecyclerViewAdapter
-import cn.hukecn.base.AppBaseActivity
+import cn.hukecn.base.BaseFragment
 import cn.hukecn.bean.FundBean
-import cn.hukecn.fund.*
+import cn.hukecn.fund.AppConfig
+import cn.hukecn.fund.AsyncHttp
+import cn.hukecn.fund.MyHttp
+import cn.hukecn.fund.R
 import cn.hukecn.network.FundRetrofitHolder
 import cn.hukecn.network.FundService
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
-import com.jaeger.library.StatusBarUtil
 import com.scwang.smartrefresh.header.MaterialHeader
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -34,34 +36,49 @@ import kotlinx.android.synthetic.main.layout_title_main.*
 import java.util.*
 import kotlin.math.roundToInt
 
-class MainActivity : AppBaseActivity() {
-
-    companion object {
-        private const val TAG = "MainActivity"
-    }
+class HomeFragment : BaseFragment() {
+    private lateinit var homeViewModel: HomeViewModel
+    private var mTitle: String? = null
 
     private var income : Double = 0.0
-    private var current: Long = 0
     private var calendar: Calendar? = null
-    private var btn_setting: Button? = null
     private var fundListRecyclerViewAdapter: FundListRecyclerViewAdapter? = null
     private var fundBeanList: MutableList<FundBean> = ArrayList()
     private var mMaterialHeader: MaterialHeader? = null
     private var phoneNum : String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
+    companion object {
+        private const val TAG = "HomeFragment"
+        fun getInstance(title: String): HomeFragment {
+            val fragment = HomeFragment()
+            val bundle = Bundle()
+            fragment.arguments = bundle
+            fragment.mTitle = title
+            return fragment
+        }
+    }
+
+    override fun getLayoutId(): Int = R.layout.fragment_home
+    override fun initView() {
         calendar = Calendar.getInstance()
-        btn_setting = findViewById<View>(R.id.btn_setting) as Button
         initRecyclerView()
 
-        tv_search.setOnClickListener { startActivity(Intent(this@MainActivity, SearchActivity::class.java)) }
-        tv_search.setOnClickListener { startActivity(Intent(this@MainActivity, SearchActivity::class.java))}
+        tv_search.setOnClickListener { startActivity(Intent(activity, SearchActivity::class.java)) }
+        tv_search.setOnClickListener { startActivity(Intent(activity, SearchActivity::class.java))}
         phoneNum = MyApplication.instance.getPhoneNumber()
-        getOptionalFundList(phoneNum)
-        getlatestInfo()
         initViewFlipper()
         initRefreshView()
+        homeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
+        homeViewModel.text.observe(viewLifecycleOwner, Observer {
+
+        })
+    }
+
+
+    override fun lazyLoad() {
+        getOptionalFundList(phoneNum)
+        getlatestInfo()
     }
 
     private fun initRefreshView() {
@@ -76,24 +93,20 @@ class MainActivity : AppBaseActivity() {
         }
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_main
-    }
-
     private fun initViewFlipper() {
         for(index in 0 until 3){
             val view = layoutInflater.inflate(R.layout.item_flipper,null)
             view_flipper.addView(view)
         }
-        view_flipper.setInAnimation(this,R.anim.anim_in)
-        view_flipper.setOutAnimation(this,R.anim.anim_out)
+        view_flipper.setInAnimation(activity,R.anim.anim_in)
+        view_flipper.setOutAnimation(activity,R.anim.anim_out)
         view_flipper.setFlipInterval(3500)
         view_flipper.startFlipping()
     }
 
     private fun initRecyclerView() {
-        recyclerview.layoutManager = LinearLayoutManager(this)
-        recyclerview.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        recyclerview.layoutManager = LinearLayoutManager(activity)
+        recyclerview.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
         fundListRecyclerViewAdapter = FundListRecyclerViewAdapter(R.layout.fund_list_swipe_item, fundBeanList)
         recyclerview.adapter = fundListRecyclerViewAdapter
         fundListRecyclerViewAdapter!!.setOnItemChildClickListener { adapter, view, position ->
@@ -110,13 +123,14 @@ class MainActivity : AppBaseActivity() {
             }
         }
         var emptyView = layoutInflater.inflate(R.layout.recycler_empty_view,null,false)
-        emptyView.setOnClickListener { startActivity(Intent(this@MainActivity, SearchActivity::class.java))  }
+        emptyView.setOnClickListener { startActivity(Intent(activity, SearchActivity::class.java))  }
         fundListRecyclerViewAdapter!!.emptyView = emptyView
     }
 
     private fun showEditDialog(fundBean: FundBean) {
         val type = InputType.TYPE_CLASS_NUMBER
-        MaterialDialog(this).show {
+        mContext?.let {
+            MaterialDialog(it).show {
             title(R.string.remind)
             input(waitForPositiveButton = true,hint = "请输入购买金额",inputType = type) { dialog, text ->
                 fundBean.money = text.toString().toFloat()
@@ -124,6 +138,7 @@ class MainActivity : AppBaseActivity() {
                 fundListRecyclerViewAdapter!!.notifyDataSetChanged()
                 countIncome()
             }
+        }
         }
     }
 
@@ -138,20 +153,23 @@ class MainActivity : AppBaseActivity() {
                 ?.updateOptionalFund(params)
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
-                ?.subscribe({ Toast.makeText(this@MainActivity, "更新成功", Toast.LENGTH_SHORT).show() }) { }
+                ?.subscribe({ Toast.makeText(activity, "更新成功", Toast.LENGTH_SHORT).show() }) { }
     }
 
     private fun deleteItem(fundBean: FundBean) {
         FundRetrofitHolder.retrofit
                 ?.create(FundService::class.java)
-                ?.deleteOptionalFund("2013551128",fundBean.fundcode)
+                ?.deleteOptionalFund(phoneNum,fundBean.fundcode)
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
-                ?.subscribe({ Toast.makeText(this@MainActivity, "删除成功", Toast.LENGTH_SHORT).show() }) { }
+                ?.subscribe({
+                    Toast.makeText(activity, "删除成功", Toast.LENGTH_SHORT).show()
+                    refresh()
+                }) { }
     }
 
     private fun toFundDetailActivity(fundBean: FundBean) {
-        val intent = Intent(this, FundDetailActivity::class.java)
+        val intent = Intent(activity, FundDetailActivity::class.java)
         intent.putExtra("fundid", fundBean.fundcode)
         intent.putExtra("fundname", fundBean.name)
         startActivity(intent)
@@ -256,15 +274,7 @@ class MainActivity : AppBaseActivity() {
         }
     }
 
-    override fun onBackPressed() {
-        if (System.currentTimeMillis() - current > 2000) {
-            current = System.currentTimeMillis()
-            Toast.makeText(applicationContext, "再按一次退出程序", Toast.LENGTH_SHORT).show()
-        } else {
-            super.onBackPressed()
-            Process.killProcess(Process.myPid())
-        }
-    }
+
 
     override fun onResume() {
         super.onResume()
@@ -287,13 +297,12 @@ class MainActivity : AppBaseActivity() {
                 if (statusCode == 200) {
                     setIndexValue(content)
                 }
-
             }
         }
 
     }
     private fun getlatestInfo(): Unit{
-            MyHttp.get(this@MainActivity, AppConfig.LATESTINDEXURL, listener, "gbk")
+        MyHttp[mContext, AppConfig.LATESTINDEXURL, listener, "gbk"]
     }
 
     // 获取小时
@@ -349,9 +358,9 @@ class MainActivity : AppBaseActivity() {
 
     private fun updateIndexValue(name: String,value: Double,percent: Double,pos: Int,viewPos: Int = 0) {
         var rootView = view_flipper.getChildAt(pos);
-        var indexName :TextView ? = null
-        var indexValue :TextView ? = null
-        var indexRise :TextView ? = null
+        var indexName : TextView? = null
+        var indexValue : TextView? = null
+        var indexRise : TextView? = null
 
         if(viewPos == 0){
             indexName = rootView.findViewById(R.id.tv_index_name)

@@ -1,4 +1,4 @@
-package cn.hukecn.fund
+package cn.hukecn.bean
 
 /**
  * Created by Kelson on 2015/11/9.

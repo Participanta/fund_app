@@ -1,105 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:paddingLeft="@dimen/dp_15"
-    android:paddingRight="@dimen/dp_15"
     android:paddingTop="@dimen/dp_5"
     android:paddingBottom="@dimen/dp_5"
+    android:paddingLeft="@dimen/dp_15"
+    android:paddingRight="@dimen/dp_15"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:orientation="vertical"
+
+    <TextView
+        android:id="@+id/tv_fundname"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:singleLine="true"
+        android:text="天弘基金天弘基金天弘基金天弘基金"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_18"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_fundname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/sp_18"
-            android:textColor="#000"
-            android:singleLine="true"
-            android:text="天弘基金天弘基金天弘基金天弘基金"/>
+    <TextView
+        android:id="@+id/tv_money_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="金额"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_fundname" />
 
-        <LinearLayout
-            android:layout_marginTop="@dimen/dp_5"
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="金额"
-                    android:singleLine="true"
-                    android:textSize="@dimen/sp_12"
-                    android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/tv_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="购买金额500"
+        android:textColor="#000000"
+        android:textSize="@dimen/sp_14"
+        android:layout_marginTop="@dimen/dp_5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_money_value" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_marginTop="@dimen/dp_5">
-                    <TextView
-                        android:id="@+id/tv_money"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="购买金额500"
-                        android:singleLine="true"
-                        android:textColor="#000000"
-                        android:textSize="@dimen/sp_14"
-                        android:layout_weight="1"/>
+    <ImageView
+        android:id="@+id/iv_edit"
+        android:layout_width="@dimen/dp_15"
+        android:layout_height="@dimen/dp_15"
+        android:layout_marginLeft="@dimen/dp_5"
+        android:layout_marginTop="@dimen/dp_5"
+        app:layout_constraintLeft_toRightOf="@+id/tv_money"
+        app:layout_constraintTop_toBottomOf="@+id/tv_money_value"
+        android:src="@drawable/ic_edit" />
 
-                    <ImageView
-                        android:id="@+id/iv_edit"
-                        android:layout_marginLeft="@dimen/dp_5"
-                        android:src="@drawable/ic_edit"
-                        android:layout_width="@dimen/dp_15"
-                        android:layout_height="@dimen/dp_15"
-                        />
-                </LinearLayout>
+    <TextView
+        android:id="@+id/tv_income_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:singleLine="true"
+        android:text="今日预计收益"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintTop_toBottomOf="@+id/tv_fundname"
+        android:layout_marginLeft="@dimen/dp_60"
+        app:layout_constraintLeft_toRightOf="@+id/tv_money"/>
 
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="今日预计收益"
-                    android:singleLine="true"
-                    android:textSize="@dimen/sp_12"
-                    android:layout_weight="1"/>
-                <TextView
-                    android:id="@+id/tv_income"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="预计收益5"
-                    android:layout_marginTop="5dp"
-                    android:singleLine="true"
-                    android:textColor="#000000"
-                    android:gravity="center"
-                    android:textSize="@dimen/sp_14"
-                    android:layout_weight="1"/>
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
+    <TextView
+        android:id="@+id/tv_income"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="预计收益5"
+        android:layout_marginLeft="@dimen/dp_70"
+        app:layout_constraintTop_toBottomOf="@+id/tv_income_value"
+        app:layout_constraintLeft_toRightOf="@+id/tv_money"
+        android:textColor="#000000"
+        android:textSize="@dimen/sp_14" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:orientation="vertical">
         <TextView
             android:id="@+id/tv_fund_worth"
@@ -124,4 +110,4 @@
 
 
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
