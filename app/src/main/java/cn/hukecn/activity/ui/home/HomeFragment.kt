@@ -20,9 +20,8 @@ import cn.hukecn.activity.SearchActivity
 import cn.hukecn.adapter.FundListRecyclerViewAdapter
 import cn.hukecn.base.BaseFragment
 import cn.hukecn.bean.FundBean
-import cn.hukecn.fund.AppConfig
-import cn.hukecn.fund.AsyncHttp
-import cn.hukecn.fund.MyHttp
+import cn.hukecn.bean.IndexItem
+import cn.hukecn.bean.IndexValue
 import cn.hukecn.fund.R
 import cn.hukecn.network.FundRetrofitHolder
 import cn.hukecn.network.FundService
@@ -78,7 +77,7 @@ class HomeFragment : BaseFragment() {
 
     override fun lazyLoad() {
         getOptionalFundList(phoneNum)
-        getlatestInfo()
+        getIndexInfo()
     }
 
     private fun initRefreshView() {
@@ -198,7 +197,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun refresh() {
-        getlatestInfo()
+        getIndexInfo()
         for (bean in fundBeanList) {
             getFundValuation(bean.fundcode)
         }
@@ -291,18 +290,15 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    val listener = object : AsyncHttp.HttpListener{
-        override fun onHttpCallBack(statusCode: Int, content: String?) {
-            if (statusCode == 200) {
-                if (statusCode == 200) {
-                    setIndexValue(content)
-                }
-            }
-        }
-
-    }
-    private fun getlatestInfo(): Unit{
-        MyHttp[mContext, AppConfig.LATESTINDEXURL, listener, "gbk"]
+    private fun getIndexInfo(): Unit{
+        FundRetrofitHolder.retrofit
+                ?.create(FundService::class.java)
+                ?.getIndexValue()
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe({
+                    setIndexValue(it.data) }
+                ) { }
     }
 
     // 获取小时
@@ -316,44 +312,27 @@ class HomeFragment : BaseFragment() {
             return minuteOfDay >= start && minuteOfDay <= end
         }
 
-    private fun setIndexValue(content: String?){
-        val datas = content!!.split(";")
-        for (value in datas){
-            if(value.contains("hq_str_s_sh000001")){  //上证指数
-                val s_sh = value.substring(value.indexOf("\"")+1,value.length-2)
-                val indexValues = s_sh.split(",")
-                updateIndexValue(indexValues[0],indexValues[1].toDouble(),indexValues[3].toDouble(),0)
-            }
+    private fun setIndexValue(indexValue: IndexValue?){
+        //上证指数
+        var hq_str_s_sh000001 = indexValue!!.hq_str_s_sh000001
+        updateIndexValue(hq_str_s_sh000001.name, hq_str_s_sh000001.value, hq_str_s_sh000001.percent, 0)
+        //创业板指
+        var hq_str_s_sz399006 = indexValue!!.hq_str_s_sz399006
+        updateIndexValue(hq_str_s_sz399006.name, hq_str_s_sz399006.value, hq_str_s_sz399006.percent, 0, 1)
+        //深证成指
+        var hq_str_s_sz399001 = indexValue!!.hq_str_s_sz399001
+        updateIndexValue(hq_str_s_sz399001.name, hq_str_s_sz399001.value, hq_str_s_sz399001.percent, 1)
+        //恒生指数
+        var hq_str_int_hangseng = indexValue!!.hq_str_int_hangseng
+        updateIndexValue(hq_str_int_hangseng.name, hq_str_int_hangseng.value, hq_str_int_hangseng.percent, 2, 1)
+        //沪深300
+        var hq_str_s_sz399300 = indexValue!!.hq_str_s_sz399300
+        updateIndexValue(hq_str_s_sz399300.name, hq_str_s_sz399300.value, hq_str_s_sz399300.percent, 1, 1)
+        //上证50
+        var hq_str_s_sh000016 = indexValue!!.hq_str_s_sh000016
+        updateIndexValue(hq_str_s_sh000016.name, hq_str_s_sh000016.value, hq_str_s_sh000016.percent, 2)
 
-            if(value.contains("hq_str_s_sz399006")){  //创业板指
-                val s_sz = value.substring(value.indexOf("\"")+1,value.length-2)
-                val indexValues = s_sz.split(",")
-                updateIndexValue(indexValues[0],indexValues[1].toDouble(),indexValues[3].toDouble(),0,1)
-            }
-            if(value.contains("hq_str_s_sz399001")){  //深证成指
-                val s_sz = value.substring(value.indexOf("\"")+1,value.length-2)
-                val indexValues = s_sz.split(",")
-                updateIndexValue(indexValues[0],indexValues[1].toDouble(),indexValues[3].toDouble(),1)
-            }
 
-            if(value.contains("hq_str_int_hangseng")){  //恒生指数
-                val hangseng = value.substring(value.indexOf("\"")+1,value.length-2)
-                val indexValues = hangseng.split(",")
-                updateIndexValue(indexValues[0],indexValues[1].toDouble(),indexValues[3].toDouble(),2,1)
-            }
-
-            if(value.contains("hq_str_s_sz399300")){  //沪深300
-                val s_sz = value.substring(value.indexOf("\"")+1,value.length-2)
-                val indexValues = s_sz.split(",")
-                updateIndexValue(indexValues[0],indexValues[1].toDouble(),indexValues[3].toDouble(),1,1)
-            }
-
-            if(value.contains("hq_str_s_sh000016")){  //上证50
-                val s_sz = value.substring(value.indexOf("\"")+1,value.length-2)
-                val indexValues = s_sz.split(",")
-                updateIndexValue(indexValues[0],indexValues[1].toDouble(),indexValues[3].toDouble(),2)
-            }
-        }
     }
 
     private fun updateIndexValue(name: String,value: Double,percent: Double,pos: Int,viewPos: Int = 0) {

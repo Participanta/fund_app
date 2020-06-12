@@ -1,9 +1,6 @@
 package cn.hukecn.network
 
-import cn.hukecn.bean.FundDeatil
-import cn.hukecn.bean.FundItem
-import cn.hukecn.bean.OptionalFundItem
-import cn.hukecn.bean.FundBean
+import cn.hukecn.bean.*
 import io.reactivex.Observable
 import retrofit2.http.*
 
@@ -28,4 +25,7 @@ interface FundService {
 
     @GET("get_fund_detail")
     fun getFundDetail(@Query("fund_code") fund_code: String?): Observable<Template<FundDeatil>>
+
+    @GET("get_index_value")
+    fun getIndexValue(): Observable<Template<IndexValue>>
 }
