@@ -1,6 +1,5 @@
 package cn.hukecn.activity.ui.home
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -20,7 +19,6 @@ import cn.hukecn.activity.SearchActivity
 import cn.hukecn.adapter.FundListRecyclerViewAdapter
 import cn.hukecn.base.BaseFragment
 import cn.hukecn.bean.FundBean
-import cn.hukecn.bean.IndexItem
 import cn.hukecn.bean.IndexValue
 import cn.hukecn.fund.R
 import cn.hukecn.network.FundRetrofitHolder

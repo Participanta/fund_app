@@ -15,4 +15,7 @@
     <string name="title_news">资讯</string>
     <string name="title_user">个人</string>
     <string name="news_commentsize">%1$s评论</string>
+    <string name="about">关于</string>
+    <string name="setting">设置</string>
+
 </resources>

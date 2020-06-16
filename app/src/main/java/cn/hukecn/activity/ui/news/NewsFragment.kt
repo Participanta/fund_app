@@ -1,11 +1,13 @@
 package cn.hukecn.activity.ui.news
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import cn.hukecn.activity.WebViewActivity
 import cn.hukecn.adapter.NewsDetailAdapter
 import cn.hukecn.base.BaseFragment
 import cn.hukecn.bean.NewsDetail
@@ -56,9 +58,8 @@ class NewsFragment : BaseFragment() {
         recyclerview.layoutManager = LinearLayoutManager(mContext)
         newsDetailAdapter = NewsDetailAdapter(datas, mContext)
         recyclerview.adapter = newsDetailAdapter
-        newsDetailAdapter!!.setOnItemChildClickListener { adapter, view, position ->
-
-
+        newsDetailAdapter!!.setOnItemClickListener { adapter, view, position ->
+            startActivity(Intent(mContext,WebViewActivity::class.java))
         }
     }
 

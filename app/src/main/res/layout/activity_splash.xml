@@ -16,10 +16,12 @@
 
         <ImageView
             android:id="@+id/iv_web_icon"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_100"
             android:scaleType="fitXY"
-            android:src="@drawable/icon" />
+            android:src="@drawable/icon"
+            android:padding="@dimen/dp_3"
+            android:background="@drawable/shape_circle_bac"/>
 
         <TextView
             android:id="@+id/tv_app_name"
